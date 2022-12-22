@@ -1,0 +1,16 @@
+﻿sample,name,source,soil,fraction,ri,bouyantdensity,GC
+4_5,GcA,GcA,Craibstone pH 4.5,0,,,
+4_5_10,GcA10,GcA,Craibstone pH 4.5,10,1.3961,1.661,47.3
+4_5_11,GcA11,GcA,Craibstone pH 4.5,11,1.3956,1.656,44.1
+4_5_12,GcA12,GcA,Craibstone pH 4.5,12,1.3951,1.65,40.9
+4_5_13,GcA13,GcA,Craibstone pH 4.5,13,1.3946,1.645,37.6
+4_5_4,GcA4,GcA,Craibstone pH 4.5,4,1.3994,1.697,68.7
+4_5_5,GcA5,GcA,Craibstone pH 4.5,5,1.3988,1.691,64.8
+4_5_6,GcA6,GcA,Craibstone pH 4.5,6,1.3982,1.684,60.9
+4_5_7,GcA7,GcA,Craibstone pH 4.5,7,1.3976,1.677,57
+4_5_8,GcA8,GcA,Craibstone pH 4.5,8,1.3972,1.673,54.5
+4_5_9,GcA9,GcA,Craibstone pH 4.5,9,1.3966,1.667,50.6
+7_5,GcB,GcB,Craibstone pH 7.5,0,,,
+CM,GcC,GcC,Corsemaul,0,,,
+LD,GcL,GcL,Lower Dell,0,,,
+
