@@ -2,8 +2,16 @@
 args = commandArgs(trailingOnly=TRUE)
 library(dada2)
 library(ggplot2)
+
+args = commandArgs(trailingOnly=TRUE)
+if (length(args)==0) {
+  args[1] = "_R1",
+  args[2] = "_R2"
+}
+
 inpath <- "./01_data/02_trimmed"
 outpath <- "./01_data/03_filtered"
+
 list.files(inpath)
 # Forward and reverse fastq filenames have format: SAMPLENAME_R1_val_1.fastq and SAMPLENAME_R2_val_2.fq
 fnFs <- sort(list.files(inpath, pattern = paste0(args[1], "_val_1.fq"), full.names = TRUE))
