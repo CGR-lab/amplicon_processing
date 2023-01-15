@@ -1,0 +1,19 @@
+---
+title: "Processing amoA amplicons from sequencing data"
+author: "Dylan Bodington"
+date: "`r Sys.Date()`"
+output:
+  word_document:
+    toc: yes
+    toc_depth: '2'
+  html_document:
+    toc: yes
+    toc_depth: 2
+    code_folding: hide
+    fig_caption: yes
+citation_package: bibtex
+bibliography: bib.bib
+link-citations: yes
+---
+
+Sequence data was trimmed with TrimGalore [@krueger2021], a wrapper using CutAdapt [@EJ200] for trimming of sequencing primers and adapters and FastQC [@andrews2012] for quality control. Trimmed sequences were assigned to amplicon sequence variants (ASVs) using dada2[@callahan2016], which includes quality filtering and chimera removal. Taxonomy was assigned to ASVs in dada2 using a custom database created from a highly-resolved phylogeny of ammonia-oxidising archaea [@alves2018]. ASVs were clustered at different cutoffs using the R package DECIPHER [@RJ2016].

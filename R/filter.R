@@ -26,7 +26,7 @@ filtRs <- file.path(outpath, paste0(sample.names, "_2_filt.fastq.gz"))
 names(filtFs) <- sample.names
 names(filtRs) <- sample.names
 #Set truncLen and minLen according to your dataset
-out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(2,5), truncLen=c(240,160),truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=TRUE)
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(2,5), truncLen=c(240,160), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=TRUE)
 errF <- learnErrors(filtFs, multithread=TRUE)
 errR <- learnErrors(filtRs, multithread=TRUE)
 # Plot error rates
