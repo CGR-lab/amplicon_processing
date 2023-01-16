@@ -5,8 +5,7 @@ library(phyloseq, lib.loc = "/uoa/scratch/shared/Soil_Microbiology_Group/tools/r
 library(Biostrings)
 library(ggplot2)
 seqtab.nochim <- readRDS(file = "./02_out/seqtab.Rds")
-taxa <- assignTaxonomy(seqtab.nochim, "/uoa/scratch/shared/Soil_Microbiology_Group/Public_databases/silva_nr99_v138.1_train_set.fa.gz", multithread=TRUE)
-taxa <- addSpecies(taxa, "/uoa/scratch/shared/Soil_Microbiology_Group/Public_databases/silva_species_assignment_v138.1.fa.gz")
+taxa <- assignTaxonomy(seqtab.nochim, "/uoa/scratch/shared/Soil_Microbiology_Group/Public_databases/AamoA_rdp_tax_learning.fasta", multithread=TRUE)
 samples.out <- rownames(seqtab.nochim)
 samdf <- read.csv("./00_ref/metadata.csv")
 rownames(samdf) <- samples.out

@@ -26,7 +26,7 @@ filtRs <- file.path(outpath, paste0(sample.names, "_2_filt.fastq.gz"))
 names(filtFs) <- sample.names
 names(filtRs) <- sample.names
 #Set truncLen and minLen according to your dataset
-out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(2,5), truncLen=c(240,160), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=TRUE)
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(2,2), truncLen=c(200,200), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=TRUE)
 errF <- learnErrors(filtFs, multithread=TRUE)
 errR <- learnErrors(filtRs, multithread=TRUE)
 # Plot error rates
@@ -38,7 +38,7 @@ ggplot2::ggsave(errRplot, file = "02_out/filtR.error.rate.pdf")
 dadaFs <- dada(filtFs, err=errF, multithread=TRUE)
 dadaRs <- dada(filtRs, err=errR, multithread=TRUE)
 # Merge read pairs
-mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, verbose=TRUE)
+mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, justConcatenate = TRUE, verbose=TRUE)
 seqtab <- makeSequenceTable(mergers)
 seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
 saveRDS(seqtab.nochim, file = "./02_out/seqtab.Rds")
