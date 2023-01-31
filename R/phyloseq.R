@@ -1,11 +1,26 @@
 #!/usr/bin/env Rscript
-args = commandArgs(trailingOnly=TRUE)
 library(dada2)
 library(phyloseq, lib.loc = "/uoa/scratch/shared/Soil_Microbiology_Group/tools/r_libs/common")
 library(Biostrings)
 library(ggplot2)
+
+args = commandArgs(trailingOnly=TRUE)
+if(length(args)==0) {
+  args[1] = "AOA_alves"
+}
+
+if(args[1]=="AOA") {
+  tax_file = "/uoa/scratch/shared/Soil_Microbiology_Group/Public_databases/amoA_AOA_tax_cluster.fasta"
+} else if(args[1]=="AOB") {
+  tax_file = "/uoa/scratch/shared/Soil_Microbiology_Group/Public_databases/amoA_AOB_tax_cluster.fasta"
+} else if(args[1]=="commamox") {
+  tax_file = "/uoa/scratch/shared/Soil_Microbiology_Group/Public_databases/amoA_AOA_tax_alves.fasta"
+} else {
+  tax_file = "/uoa/scratch/shared/Soil_Microbiology_Group/Public_databases/amoA_AOA_tax_alves.fasta"
+}
+
 seqtab.nochim <- readRDS(file = "./02_out/seqtab.Rds")
-taxa <- assignTaxonomy(seqtab.nochim, "/uoa/scratch/shared/Soil_Microbiology_Group/Public_databases/AamoA_rdp_tax_learning.fasta", multithread=TRUE)
+taxa <- assignTaxonomy(seqtab.nochim, tax_file, multithread=TRUE)
 samples.out <- rownames(seqtab.nochim)
 samdf <- read.csv("./00_ref/metadata.csv")
 rownames(samdf) <- samples.out

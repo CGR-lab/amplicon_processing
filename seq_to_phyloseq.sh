@@ -15,10 +15,54 @@ module load fastqc
 module load r
 module load bioconductor
 
+function usage {
+        echo "Usage: $(basename $0) [-abcd] [-i INPUTDIR] [-f FORDES] [-r REVDES]" 2>&1
+        echo '   -a   AOA'
+        echo '   -b   AOB'
+        echo '   -c   comammox'
+        echo '   -d   AOA Alves'
+        echo '   -i   INPUTPATH   path to the sequence fastx files'
+        echo '   -f   FORDES      forward read designator eg. R1'
+        echo '   -r   REVDES      reverse read designator eg. R2'
+        exit 1
+}
+
+if [[ ${#} -eq 0 ]]; then
+   usage
+fi
+
+# Define list of arguments expected in the input
+optstring=":abcdi:f:r:"
+
+while getopts ${optstring} arg; do
+  case "${arg}" in
+    a) amplicon="AOA" ;;
+    b) amplicon="AOB" ;;
+    c) amplicon="commamox" ;;
+    d) amplicon="AOA_alves" ;;
+    i) inputdir="${OPTARG:-01_data/00_input}";;
+    f) fabb="${OPTARG:-_R1}";;
+    r) rabb="${OPTARG:-_R2}";;
+
+    ?)
+      echo "Invalid option: -${OPTARG}."
+      echo
+      usage
+      ;;
+  esac
+done
+
+# Inspect OPTIND
+echo "OPTIND: $OPTIND"
+
 basedir=$(pwd)
-inputdir=${1:-01_data/00_input}
-fabb=${2:-_R1}
-rabb=${3:-_R2}
+if [ ${amplicon} = "AOB"; then
+    clip_R1=21
+    clip_R2=22
+else
+    clip_R1=22
+    clip_R2=21
+fi
 
 mkdir -p 01_data/01_fastqc/01_untrimmed
 mkdir -p 01_data/01_fastqc/02_trimmed
@@ -28,26 +72,12 @@ mkdir -p 02_out
 
 fastqc --noextract -o 01_data/01_fastqc/01_untrimmed $inputdir/*
 
-for f in $inputdir/*$fabb*; do trim_galore --fastqc -a X --clip_R1 22 --clip_R2 21 -q 20 -o 01_data/02_trimmed --paired $f ${f/$fabb/$rabb}; mv 01_data/02_trimmed/*fastqc* 01_data/01_fastqc/02_trimmed/; mv 01_data/02_trimmed/*report* 01_data/01_fastqc/02_trimmed/; done
-
-Rscript R/filter.R $fabb $rabb
-
-Rscript R/phyloseq.R
-
-## Useage: sbatch 1.trim.sh <Path_to_fastx_directory> <Optional forward read filename designation> <Optional reverse read filename
-## designation>
-## 
-## <Path_to_fastx_directory>                     The directory with all raw fastx files. Filename prefix up to the read direction indicator
-##                                               will correspond to the sample name
-## <Optional forward read filename designation>  Part of the filename which indicates the forward reads, defaults to "_R1"
-## <Optional reverse read filename designation>  Part of the filename which indicates the reverse reads, defaults to "_R2"
-##
 ## For specific primers/adapter you can set the clipping manually, which will remove the adapters and clip the amplicon on the desired
-## reading frame. This example includes the parameters for AOA amoA primers.
-
+## reading frame. This example includes the parameters for AOA amoA primers (23F 616R).
 #for f in $inputdir/*$fabb*; do trim_galore --fastqc -a TCGTGGGCAGCGTCAGATGTGT -a2 GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG --clip_R1 22 --clip_R2 21 -q 15 -o 01_data/02_trimmed --paired $f ${f/$fabb/$rabb} 2>&1 | tee 01_data/02_trimmed/$f.trimming.info; mv 01_data/02_trimmed/*fastqc* 01_data/01_fastqc/02_trimmed/; mv 01_data/02_trimmed/*report* 01_data/01_fastqc/02_trimmed/; done
 
-## --clip_R1 19 --clip_R2 20 : for 16S V3/V4 EMP primers
-## --clip_R1 21 --clip_R2 22 : for AOB amoA assembly
-## --clip_R1 22 --clip_R2 21 : for AOA amoA gap 
-## Adjust based on a reading frame check
+for f in $inputdir/*$fabb*; do trim_galore --fastqc -a X --clip_R1 ${clip_R1} --clip_R2 ${clip_R2} -q 20 -o 01_data/02_trimmed --paired $f ${f/$fabb/$rabb}; mv 01_data/02_trimmed/*fastqc* 01_data/01_fastqc/02_trimmed/; mv 01_data/02_trimmed/*report* 01_data/01_fastqc/02_trimmed/; done
+
+Rscript R/filter.R $amplicon $fabb $rabb
+
+Rscript R/phyloseq.R $amplicon

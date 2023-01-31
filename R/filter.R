@@ -1,12 +1,20 @@
 #!/usr/bin/env Rscript
-args = commandArgs(trailingOnly=TRUE)
 library(dada2)
 library(ggplot2)
 
 args = commandArgs(trailingOnly=TRUE)
-if (length(args)==0) {
-  args[1] = "_R1",
-  args[2] = "_R2"
+if(length(args)==0) {
+  args[1] = "AOA"
+  args[2] = "_R1"
+  args[3] = "_R2"
+}
+
+if(args[1]=="AOA") {
+  trunc_len = 200
+  conc_status = TRUE
+} else if(args[1]=="AOB") {
+  trunc_len = 229
+  conc_status = FALSE
 }
 
 inpath <- "./01_data/02_trimmed"
@@ -18,7 +26,7 @@ fnFs <- sort(list.files(inpath, pattern = paste0(args[1], "_val_1.fq"), full.nam
 fnRs <- sort(list.files(inpath, pattern = paste0(args[2], "_val_2.fq"), full.names = TRUE))
 if(length(fnFs) != length(fnRs)) stop("Forward and reverse files do not match")
 # Extract sample names, assuming filenames have format: SAMPLENAME_XXX.fastq
-sample.names <- sapply(strsplit(basename(fnFs), args[1]), `[`, 1)
+sample.names <- sapply(strsplit(basename(fnFs), args[2]), `[`, 1)
 # Place filtered files in filtered subdirectory
 filtFs <- file.path(outpath, paste0(sample.names, "_1_filt.fastq.gz"))
 filtRs <- file.path(outpath, paste0(sample.names, "_2_filt.fastq.gz"))
@@ -26,7 +34,7 @@ filtRs <- file.path(outpath, paste0(sample.names, "_2_filt.fastq.gz"))
 names(filtFs) <- sample.names
 names(filtRs) <- sample.names
 #Set truncLen and minLen according to your dataset
-out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(2,2), truncLen=c(200,200), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=TRUE)
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(2,2), truncLen=c(trunc_len,trunc_len), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=TRUE)
 errF <- learnErrors(filtFs, multithread=TRUE)
 errR <- learnErrors(filtRs, multithread=TRUE)
 # Plot error rates
@@ -38,7 +46,7 @@ ggplot2::ggsave(errRplot, file = "02_out/filtR.error.rate.pdf")
 dadaFs <- dada(filtFs, err=errF, multithread=TRUE)
 dadaRs <- dada(filtRs, err=errR, multithread=TRUE)
 # Merge read pairs
-mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, justConcatenate = TRUE, verbose=TRUE)
+mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, justConcatenate=conc_status, verbose=TRUE)
 seqtab <- makeSequenceTable(mergers)
 seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
 saveRDS(seqtab.nochim, file = "./02_out/seqtab.Rds")
