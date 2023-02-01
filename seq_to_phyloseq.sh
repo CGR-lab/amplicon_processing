@@ -40,9 +40,9 @@ while getopts ${optstring} arg; do
     b) amplicon="AOB" ;;
     c) amplicon="commamox" ;;
     d) amplicon="AOA_alves" ;;
-    i) inputdir="${OPTARG:-01_data/00_input}";;
-    f) fabb="${OPTARG:-_R1}";;
-    r) rabb="${OPTARG:-_R2}";;
+    i) inputdir="${OPTARG:-./01_data/00_input}";;
+    f) fabb="${OPTARG:-R1}";;
+    r) rabb="${OPTARG:-R2}";;
 
     ?)
       echo "Invalid option: -${OPTARG}."

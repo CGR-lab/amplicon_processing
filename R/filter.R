@@ -21,11 +21,10 @@ inpath <- "./01_data/02_trimmed"
 outpath <- "./01_data/03_filtered"
 
 list.files(inpath)
-# Forward and reverse fastq filenames have format: SAMPLENAME_R1_val_1.fastq and SAMPLENAME_R2_val_2.fq
-fnFs <- sort(list.files(inpath, pattern = paste0(args[1], "_val_1.fq"), full.names = TRUE))
-fnRs <- sort(list.files(inpath, pattern = paste0(args[2], "_val_2.fq"), full.names = TRUE))
+fnFs <- sort(list.files(inpath, pattern = paste0(args[2], "_val_1.fq"), full.names = TRUE))
+fnRs <- sort(list.files(inpath, pattern = paste0(args[3], "_val_2.fq"), full.names = TRUE))
 if(length(fnFs) != length(fnRs)) stop("Forward and reverse files do not match")
-# Extract sample names, assuming filenames have format: SAMPLENAME_XXX.fastq
+# Extract sample names using the forward read file name up to the forward read ID argument. eg SAMPLENAME_R1.fq.gz
 sample.names <- sapply(strsplit(basename(fnFs), args[2]), `[`, 1)
 # Place filtered files in filtered subdirectory
 filtFs <- file.path(outpath, paste0(sample.names, "_1_filt.fastq.gz"))
