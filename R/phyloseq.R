@@ -6,17 +6,19 @@ library(ggplot2)
 
 args = commandArgs(trailingOnly=TRUE)
 if(length(args)==0) {
-  args[1] = "AOA_alves"
+  args[1] = "16S"
 }
 
+tax_path = "/uoa/scratch/shared/Soil_Microbiology_Group/Reference_databases/dada2/"
+
 if(args[1]=="AOA") {
-  tax_file = "/uoa/scratch/shared/Soil_Microbiology_Group/Public_databases/amoA_AOA_tax_cluster.fasta"
+  tax_file = paste0(tax_path, "amoA_AOA_tax_cluster.fasta")
 } else if(args[1]=="AOB") {
-  tax_file = "/uoa/scratch/shared/Soil_Microbiology_Group/Public_databases/amoA_AOB_tax_cluster.fasta"
-} else if(args[1]=="commamox") {
-  tax_file = "/uoa/scratch/shared/Soil_Microbiology_Group/Public_databases/amoA_AOA_tax_alves.fasta"
+  tax_file = paste0(tax_path, "amoA_AOB_tax_cluster.fasta")
+} else if(args[1]=="16S") {
+  tax_file = paste0(tax_path, "silva_nr99_v138.1_train_set.fa.gz")
 } else {
-  tax_file = "/uoa/scratch/shared/Soil_Microbiology_Group/Public_databases/amoA_AOA_tax_alves.fasta"
+  tax_file = paste0(tax_path, "amoA_AOA_tax_alves.fasta")
 }
 
 seqtab.nochim <- readRDS(file = "./02_out/seqtab.Rds")

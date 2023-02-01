@@ -16,14 +16,15 @@ module load r
 module load bioconductor
 
 function usage {
-        echo "Usage: $(basename $0) [-abcd] [-i INPUTDIR] [-f FORDES] [-r REVDES]" 2>&1
+        echo "Usage: $(basename $0) [-abcd] [-i INPUTDIR] [-f FORID] [-r REVID]" 2>&1
         echo '   -a   AOA'
         echo '   -b   AOB'
         echo '   -c   comammox'
         echo '   -d   AOA Alves'
+        echo '   -e   16S EMP'
         echo '   -i   INPUTPATH   path to the sequence fastx files'
-        echo '   -f   FORDES      forward read designator eg. R1'
-        echo '   -r   REVDES      reverse read designator eg. R2'
+        echo '   -f   FORID      forward read ID eg. R1/_1_'
+        echo '   -r   REVID      reverse read ID eg. R2/_2_'
         exit 1
 }
 
@@ -32,7 +33,7 @@ if [[ ${#} -eq 0 ]]; then
 fi
 
 # Define list of arguments expected in the input
-optstring=":abcdi:f:r:"
+optstring=":abcdei:f:r:"
 
 while getopts ${optstring} arg; do
   case "${arg}" in
@@ -40,9 +41,10 @@ while getopts ${optstring} arg; do
     b) amplicon="AOB" ;;
     c) amplicon="commamox" ;;
     d) amplicon="AOA_alves" ;;
-    i) inputdir="${OPTARG:-./01_data/00_input}";;
-    f) fabb="${OPTARG:-R1}";;
-    r) rabb="${OPTARG:-R2}";;
+    e) amplicon="16S" ;;
+    i) inputdir="${OPTARG:-./01_data/00_input}" ;;
+    f) fabb="${OPTARG:-R1}" ;;
+    r) rabb="${OPTARG:-R2}" ;;
 
     ?)
       echo "Invalid option: -${OPTARG}."
@@ -56,7 +58,12 @@ done
 echo "OPTIND: $OPTIND"
 
 basedir=$(pwd)
-if [ ${amplicon} = "AOB"; then
+
+if [ ${amplicon} = "16S" ]
+then
+    clip_R1=19
+    clip_R2=20
+else if [ ${amplicon} = "AOB" ]
     clip_R1=21
     clip_R2=22
 else

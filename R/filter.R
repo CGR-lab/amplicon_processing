@@ -4,14 +4,17 @@ library(ggplot2)
 
 args = commandArgs(trailingOnly=TRUE)
 if(length(args)==0) {
-  args[1] = "AOA"
+  args[1] = "16S"
   args[2] = "_R1"
   args[3] = "_R2"
 }
 
-if(args[1]=="AOA") {
-  trunc_len = 200
-  conc_status = TRUE
+trunc_len = 200
+conc_status = TRUE
+
+if(args[1]=="16S") {
+  trunc_len = 220
+  conc_status = FALSE
 } else if(args[1]=="AOB") {
   trunc_len = 229
   conc_status = FALSE
@@ -32,7 +35,7 @@ filtRs <- file.path(outpath, paste0(sample.names, "_2_filt.fastq.gz"))
 # Name the filter objects by the sample names
 names(filtFs) <- sample.names
 names(filtRs) <- sample.names
-#Set truncLen and minLen according to your dataset
+#Set truncLen and minLen according to your dataset. If too few reads are passing this step, adjust maxEE up eg. c(2,5)
 out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(2,2), truncLen=c(trunc_len,trunc_len), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=TRUE)
 errF <- learnErrors(filtFs, multithread=TRUE)
 errR <- learnErrors(filtRs, multithread=TRUE)
