@@ -1,0 +1,12 @@
+#!/bin/sh
+#SBATCH --partition=uoa-compute
+#SBATCH --time=1:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem-per-cpu=4G
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=r01db22@abdn.ac.uk
+
+srun -l seq_to_phyloseq.sh -a -i 01_data/00_input -f R1 -r R2
+#srun -l cluster_otus.sh -c 99 

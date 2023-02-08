@@ -1,19 +1,10 @@
-#!/bin/bash
+#!/bin/bash -l
 
-#SBATCH --partition=uoa-compute
-#SBATCH --time=1:00:00
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
-#SBATCH --mem-per-cpu=1G
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=r01db22@abdn.ac.uk
+#module load trimgalore
+#module load cutadapt
+#module load fastqc
 
-module load trimgalore
-module load cutadapt
-module load fastqc
-module load r
-module load bioconductor
+#conda activate sponge
 
 function usage {
         echo "Usage: $(basename $0) [-abcd] [-i INPUTDIR] [-f FORID] [-r REVID]" 2>&1
@@ -23,8 +14,9 @@ function usage {
         echo '   -d   AOA Alves'
         echo '   -e   16S EMP'
         echo '   -i   INPUTPATH   path to the sequence fastx files'
-        echo '   -f   FORID      forward read ID eg. R1/_1_'
-        echo '   -r   REVID      reverse read ID eg. R2/_2_'
+        echo '   -f   FORID       forward read ID eg. R1/_1_'
+        echo '   -r   REVID       reverse read ID eg. R2/_2_'
+
         exit 1
 }
 
@@ -63,7 +55,8 @@ if [ ${amplicon} = "16S" ]
 then
     clip_R1=19
     clip_R2=20
-else if [ ${amplicon} = "AOB" ]
+elif [ ${amplicon} = "AOB" ]
+then
     clip_R1=21
     clip_R2=22
 else

@@ -16,7 +16,7 @@ if(args[1]=="16S") {
   trunc_len = 220
   conc_status = FALSE
 } else if(args[1]=="AOB") {
-  trunc_len = 229
+  trunc_len = 250
   conc_status = FALSE
 }
 
@@ -35,7 +35,7 @@ filtRs <- file.path(outpath, paste0(sample.names, "_2_filt.fastq.gz"))
 # Name the filter objects by the sample names
 names(filtFs) <- sample.names
 names(filtRs) <- sample.names
-#Set truncLen and minLen according to your dataset. If too few reads are passing this step, adjust maxEE up eg. c(2,5)
+#Set truncLen and minLen according to your dataset. If too few reads are passing the filtering step, adjust maxEE up eg. c(2,5)
 out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, maxN=0, maxEE=c(2,2), truncLen=c(trunc_len,trunc_len), truncQ=2, rm.phix=TRUE, compress=TRUE, multithread=TRUE)
 errF <- learnErrors(filtFs, multithread=TRUE)
 errR <- learnErrors(filtRs, multithread=TRUE)
@@ -50,6 +50,7 @@ dadaRs <- dada(filtRs, err=errR, multithread=TRUE)
 # Merge read pairs
 mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, justConcatenate=conc_status, verbose=TRUE)
 seqtab <- makeSequenceTable(mergers)
+# Remoce chimeras. If too fwe reads are passing this step, check your adapter trimming
 seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
 saveRDS(seqtab.nochim, file = "./02_out/seqtab.Rds")
 getN <- function(x) sum(getUniques(x))
