@@ -34,4 +34,4 @@ echo "OPTIND: $OPTIND"
 
 basedir=$(pwd)
 
-Rscript R/clusterOTUs.R $cutoff $input
+Rscript R/cluster.R $cutoff $input
