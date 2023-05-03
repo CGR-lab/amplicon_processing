@@ -1,7 +1,5 @@
 #!/bin/bash
 
-conda activate microbiome
-
 function usage {
         echo "Usage: $(basename $0) [-c CUTOFF] [-f INPUT]" 2>&1
         echo '   -c   CUTOFF    percentage similarity for OTU clustering'

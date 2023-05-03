@@ -1,10 +1,8 @@
 #!/bin/bash -l
 
-#module load trimgalore
-#module load cutadapt
-#module load fastqc
-
-#conda activate sponge
+module load trimgalore
+module load cutadapt
+module load fastqc
 
 function usage {
         echo "Usage: $(basename $0) [-abcd] [-i INPUTDIR] [-f FORID] [-r REVID]" 2>&1
@@ -31,7 +29,7 @@ while getopts ${optstring} arg; do
   case "${arg}" in
     a) amplicon="AOA" ;;
     b) amplicon="AOB" ;;
-    c) amplicon="commamox" ;;
+    c) amplicon="COM" ;;
     d) amplicon="AOA_alves" ;;
     e) amplicon="16S" ;;
     i) inputdir="${OPTARG:-./01_data/00_input}" ;;
@@ -55,6 +53,10 @@ if [ ${amplicon} = "16S" ]
 then
     clip_R1=19
     clip_R2=20
+elif [ ${amplicon} = "AOA" ]
+then
+    clip_R1=22
+    clip_R2=21
 elif [ ${amplicon} = "AOB" ]
 then
     clip_R1=21
@@ -63,6 +65,7 @@ else
     clip_R1=22
     clip_R2=21
 fi
+
 
 mkdir -p 01_data/01_fastqc/01_untrimmed
 mkdir -p 01_data/01_fastqc/02_trimmed

@@ -12,12 +12,19 @@ if (length(args) == 0) {
 trunc_len = 200
 conc_status = TRUE
 
-if (args[1] == "16S") {
-  trunc_len = 220
-  conc_status = FALSE
-} else if (args[1] == "AOB") {
-  trunc_len = 250
-  conc_status = FALSE
+if(args[1]=="16S") {
+  trunc_len_f = 220
+  trunc_len_r = 220
+} else if(args[1]=="AOA") {
+  trunc_len_f = 200
+  trunc_len_r = 200
+  conc_status = TRUE
+} else if(args[1]=="AOB") {
+  trunc_len_f = 240
+  trunc_len_r = 220
+} else if(args[1]=="COM") {
+  trunc_len_f = 200
+  trunc_len_r = 200
 }
 
 inpath <- "./01_data/02_trimmed"
@@ -57,7 +64,7 @@ out <-
     filtRs,
     maxN = 0,
     maxEE = c(2, 2),
-    truncLen = c(trunc_len, trunc_len),
+    truncLen = c(trunc_len_f, trunc_len_r),
     truncQ = 2,
     rm.phix = TRUE,
     compress = TRUE,
