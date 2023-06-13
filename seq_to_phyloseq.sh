@@ -81,6 +81,6 @@ for f in $inputdir/*$fabb*; do trim_galore --fastqc -a TCGTGGGCAGCGTCAGATGTGTATA
 
 #for f in $inputdir/*$fabb*; do trim_galore --fastqc -a X --clip_R1 ${clip_R1} --clip_R2 ${clip_R2} -q 20 -o 01_data/02_trimmed --paired $f ${f/$fabb/$rabb}; mv 01_data/02_trimmed/*fastqc* 01_data/01_fastqc/02_trimmed/; mv 01_data/02_trimmed/*report* 01_data/01_fastqc/02_trimmed/; done
 
-/uoa/scratch/shared/Soil_Microbiology_Group/libs/conda/envs/amplicon/bin/Rscript /uoa/scratch/shared/Soil_Microbiology_Group/libs/R/filter.R $amplicon $fabb $rabb
+/uoa/scratch/shared/Soil_Microbiology_Group/libs/conda/envs/dada2_amplicon/bin/Rscript /uoa/scratch/shared/Soil_Microbiology_Group/libs/R/filter.R $amplicon $fabb $rabb
 
-/uoa/scratch/shared/Soil_Microbiology_Group/libs/conda/envs/amplicon/bin/Rscript /uoa/scratch/shared/Soil_Microbiology_Group/libs/R/phyloseq.R $amplicon
+/uoa/scratch/shared/Soil_Microbiology_Group/libs/conda/envs/dada2_amplicon/bin/Rscript /uoa/scratch/shared/Soil_Microbiology_Group/libs/R/phyloseq.R $amplicon
