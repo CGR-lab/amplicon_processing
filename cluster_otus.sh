@@ -32,4 +32,4 @@ echo "OPTIND: $OPTIND"
 
 basedir=$(pwd)
 
-Rscript R/cluster.R $cutoff $input
+/uoa/scratch/shared/Soil_Microbiology_Group/libs/conda/envs/dada2_amplicon/bin/Rscript /uoa/scratch/shared/Soil_Microbiology_Group/libs/R/cluster.R $cutoff $input

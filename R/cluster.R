@@ -5,8 +5,8 @@
 library(phyloseq)
 library(speedyseq)
 library(DECIPHER)
-source("./R/cluster_asv.R")
-source("./R/write_dataset.R")
+source("/uoa/scratch/shared/Soil_Microbiology_Group/libs/R/cluster_asv.R")
+source("/uoa/scratch/shared/Soil_Microbiology_Group/libs/R/write_dataset.R")
 
 args = commandArgs(trailingOnly=TRUE)
 # Test if there is at least one argument: if not, default to 99%
@@ -16,7 +16,7 @@ if (length(args)==0) {
 
 nproc <- 8 # Set to number of cpus/processors to use for the clustering
 cluster_cutoff <- args[1] # Set the similarity cutoff of clustering
-file_base <- tools::file_path_sans_ext(basename[args[2]])
+file_base <- tools::file_path_sans_ext(basename(args[2]))
 
 ps0 <- readRDS(file = args[2])
 #Align ASV sequences, calculate distance matrix and create clusters based on required cutoff distance

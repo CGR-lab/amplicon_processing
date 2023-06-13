@@ -3,24 +3,24 @@ library(dada2)
 library(phyloseq)
 library(Biostrings)
 library(ggplot2)
-source("./R/write_dataset.R")
-source("./R/phyloseq_taxonomy_imputation.R")
+source("/uoa/scratch/shared/Soil_Microbiology_Group/libs/R/write_dataset.R")
+source("/uoa/scratch/shared/Soil_Microbiology_Group/libs/R/phyloseq_taxonomy_imputation.R")
 
 args = commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   args[1] = "16S"
 }
 
-tax_path = "/work/Reference_databases/dada2/"
+tax_path = "/uoa/scratch/shared/Soil_Microbiology_Group/Reference_databases/"
 
 if(args[1]=="16S") {
-  tax_file = paste0(tax_path, "silva_nr99_v138.1_train_set.fa.gz")
+  tax_file = paste0(tax_path, "16S/silva_nr99_v138.1_train_set.fa.gz")
 } else if(args[1]=="AOA") {
-  tax_file = paste0(tax_path, "amoA_AOA_tax_cluster.fasta")
+  tax_file = paste0(tax_path, "AOA/amoA_AOA_tax_cluster.fasta")
 } else if(args[1]=="AOB") {
-  tax_file = paste0(tax_path, "amoA_AOB_tax_cluster.fasta")
+  tax_file = paste0(tax_path, "AOB/amoA_AOB_tax_cluster.fasta")
 } else if(args[1]=="COM") {
-  tax_file = paste0(tax_path, "amoA_AOB_tax_cluster.fasta")
+  tax_file = paste0(tax_path, "AOA/amoA_AOB_tax_cluster.fasta")
 }
 
 # Import seqtab created by dada2
